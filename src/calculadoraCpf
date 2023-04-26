@@ -1,0 +1,92 @@
+
+# Lista de estados brasileiros
+list1 = ['DF', 'GO', 'MS', 'TO', 'DISTRITO FEDERAL', 'GOIAS', 'MATO GROSSO DO SUL', 'TOCANTINS']
+list2 = ['PA', 'AM', 'AC', 'AP', 'RO', 'RR', 'PARA', 'AMAZONAS', 'ACRE', 'AMAPA', 'RONDONIA', 'RORAIMA']
+list3 = ['CE', 'MA', 'PI', 'CEARA', 'MARANHAO', 'PIAUI']
+list4 = ['PE', 'RS', 'PR', 'AL', 'PERNAMBUCO', 'RIO GRANDE DO NORTE', 'PARAIBA', 'ALAGOAS']
+list5 = ['BA', 'SE', 'BAHIA', 'SERGIPE']
+list6 = ['MG', 'MINAS GERAIS']
+list7 = ['RJ', 'ES', 'RIO DE JANEIRO', 'ESPIRITO SANTO']
+list8 = ['SP', 'SAO PAULO']
+list9 = ['PR', 'SC', 'PARANA', 'SANTA CATARINA']
+list0 = ['RS', 'RIO GRANDE DO SUL']
+
+# Função que suma os oito primeiros dígitos do CPF com o 9º dígito obtido através da função calcEstado
+def somarCpf(cpf):
+    cpf = cpf + str(estado_calculado)
+    return cpf
+# Função que calcula o 10º dígito e 11º dígito do CPF e agrupa os 11 dígitos em uma string.
+def calCpf(cpf):
+    if len(cpf) == 9:
+        multCpf9 = [10, 9, 8, 7, 6, 5, 4, 3, 2]
+        multCpf10 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]        
+        cpf = list(cpf)
+        intCpf = int("".join(cpf))
+        intCpf = list(map(int, str(intCpf)))
+        resultado = [x * y for x, y in zip(multCpf9, intCpf)]
+        soma = sum(resultado)
+        digito_verificador1 = soma % 11
+        if digito_verificador1 >= 2:
+            digito_verificador1 = 11 - digito_verificador1
+        else:
+            digito_verificador1 = 0
+        intCpf.append(digito_verificador1)
+        # Calcula o segundo dígito verificador
+        resultado2 = [x * y for x, y in zip(multCpf10, intCpf)]
+        soma2 = sum(resultado2)
+        digito_verificador2 = soma2 % 11
+        if digito_verificador2 >= 2:
+            digito_verificador2 = 11 - digito_verificador2
+        else:
+            digito_verificador2 = 0
+        # Adiciona o segundo dígito verificador à lista e transforma a lista em string.
+        intCpf.append(digito_verificador2)        
+        cpf_string = ''.join(map(str, intCpf))
+        string_com_traco = '-'.join([cpf_string[:-2], cpf_string[-2:]])
+        return string_com_traco
+    else:
+        while len(cpf) != 8:
+            print('CPF inválido')
+            cpf = input('Digite os 8 digitos do seu CPF: ')
+
+
+# Função que define o 9º dígito do CPF de acordo com o estado
+def calcEstado(estado):
+    while True:
+        if estado.upper() in list1:
+            return 1
+        elif estado.upper() in list2:
+            return 2
+        elif estado.upper() in list3:
+            return 3
+        elif estado.upper() in list4:
+            return 4
+        elif estado.upper() in list5:
+            return 5
+        elif estado.upper() in list6:
+            return 6
+        elif estado.upper() in list7:
+            return 7
+        elif estado.upper() in list8:
+            return 8
+        elif estado.upper() in list9:
+            return 9
+        elif estado.upper() in list0:
+            return 0
+        else:
+            estado = input("Digite a sigla ou o nome do seu estado: ").upper()
+
+
+estado = input("Digite a sigla do seu estado: ").upper()
+estado_calculado = calcEstado(estado)
+
+cpf = input('Digite os 8 digitos do seu CPF: ')
+while len(cpf) != 8:
+    print('CPF inválido')
+    cpf = input('Digite os 8 digitos do seu CPF: ')
+cpf = somarCpf(cpf)
+calCpf(cpf)
+
+
+
+print(f'Descobri seu CPF e ele é: {calCpf(cpf)}')
